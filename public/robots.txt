@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vitor-veiga.vercel.app/sitemap.xml

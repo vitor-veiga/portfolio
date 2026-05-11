@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+@theme {
+  /* Primary — Azul Marinho (sidebar, accents, botões) */
+  --color-primary-50:  #eef3fa;  /* tint naval claro — badges, selected states */
+  --color-primary-300: #e2e8f0;  /* quase branco — textos na sidebar */
+  --color-primary-400: #cbd5e1;  /* branco acinzentado — textos secundários na sidebar */
+  --color-primary-500: #94a3b8;  /* cinza frio — labels e ícones suaves */
+  --color-primary-600: #1e3a5f;  /* azul marinho médio — bordas, divisores */
+  --color-primary-700: #162d4a;  /* azul marinho — hover, botões, accents */
+  --color-primary-800: #0f2133;  /* azul marinho escuro — cards, base sidebar */
+  --color-primary-900: #091829;  /* azul marinho profundo — fundo sidebar */
+
+  /* Secondary — Neutros claros (área principal, light mode) */
+  --color-secondary-50:  #f8fafc; /* fundo geral da área principal */
+  --color-secondary-100: #f1f5f9; /* hover, áreas levemente destacadas */
+  --color-secondary-200: #e2e8f0; /* bordas suaves */
+  --color-secondary-300: #cbd5e1; /* bordas no hover */
+  --color-secondary-400: #94a3b8; /* labels, ícones, texto muted */
+  --color-secondary-500: #64748b; /* texto secundário */
+  --color-secondary-600: #475569; /* texto corporal */
+  --color-secondary-700: #334155; /* texto intermediário */
+  --color-secondary-800: #1e293b; /* títulos de card */
+  --color-secondary-900: #0f172a; /* títulos de seção */
+}
