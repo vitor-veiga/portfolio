@@ -62,7 +62,8 @@ const projects: Project[] = [
       "PostGIS",
       "JWT",
     ],
-    highlight: "Aprovado pela Prefeitura Municipal",
+    highlight: "Moção de Aplausos",
+    documents: "/webgis-guaraquecaba.pdf",
     map: {
       longitude: -48.3321,
       latitude: -25.2778,

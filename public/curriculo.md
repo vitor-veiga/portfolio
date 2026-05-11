@@ -1,4 +1,4 @@
-# VITOR CRISTIAN DA VEIGA 
+# VITOR CRISTIAN DA VEIGA
 
 **Desenvolvedor Full-Stack | WebGIS & Geotecnologias**
 
@@ -106,7 +106,7 @@ Responsável pela proposta, aprovação e desenvolvimento de um sistema integrad
 - Organização: CIPMECS IV - Inovações e Tendências Tecnológicas – DAESC | 2025 | 40h
 - Participação: DevPR Conf – Comunidade DevParaná | 2024 | 10h
 - Organização: Semana de Integração dos Calouros de Engenharia de Software e Computação – UEPG | 2025 e 2026 | 40h
-- Moção de Aplausos por relevante contribuição ao desenvolvimento territorial e urbano de municípios paranaenses – Câmara Municipal de Ponta Grossa | 2025
+- Moção de Aplausos por relevante contribuição ao desenvolvimento territorial e urbano de municípios paranaenses – Câmara Municipal de Ponta Grossa | 2026
 
 ---
 
