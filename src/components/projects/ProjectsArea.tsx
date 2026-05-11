@@ -50,7 +50,7 @@ const projects: Project[] = [
     subtitle: "Projeto de Extensão · UEPG",
     period: "dez/2024 – atualmente",
     description:
-      "Plataforma WebGIS para elaboração do Plano Diretor Participativo de Guaraqueçaba, aprovada pela prefeitura municipal.",
+      "Plataforma WebGIS para gestão territorial, aprovada pela prefeitura municipal.",
     longDescription:
       "Sistema WebGIS desenvolvido no âmbito do projeto de assessoria para elaboração de Planos Diretores Participativos de municípios de baixo IDH no Paraná. A plataforma foi apresentada e aprovada diretamente pela prefeitura de Guaraqueçaba, com avaliação positiva quanto à usabilidade e aplicabilidade para a gestão territorial. Também utilizada como prova de conceito na Operação Rondon PR.",
     tags: [
