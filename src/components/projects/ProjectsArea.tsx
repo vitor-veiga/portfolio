@@ -12,7 +12,13 @@ interface Project {
   description: string;
   longDescription: string;
   tags: string[];
-  map: { longitude: number; latitude: number; zoom: number; label: string };
+  map: {
+    longitude: number;
+    latitude: number;
+    label: string;
+    zoom?: number;
+    boundaryUrl?: string;
+  };
   highlight?: string;
   documents?: string;
 }
@@ -40,8 +46,9 @@ const projects: Project[] = [
     map: {
       longitude: -50.1583,
       latitude: -25.0994,
-      zoom: 12,
       label: "Ponta Grossa, PR",
+      boundaryUrl:
+        "https://servicodados.ibge.gov.br/api/v3/malhas/municipios/4119905?formato=application/vnd.geo+json",
     },
   },
   {
@@ -67,8 +74,9 @@ const projects: Project[] = [
     map: {
       longitude: -48.3321,
       latitude: -25.2778,
-      zoom: 11,
       label: "Guaraqueçaba, PR",
+      boundaryUrl:
+        "https://servicodados.ibge.gov.br/api/v3/malhas/municipios/4109500?formato=application/vnd.geo+json",
     },
   },
   {
@@ -93,8 +101,9 @@ const projects: Project[] = [
     map: {
       longitude: -51.5,
       latitude: -24.0,
-      zoom: 5,
       label: "Paraná, Brasil",
+      boundaryUrl:
+        "https://servicodados.ibge.gov.br/api/v3/malhas/estados/41?formato=application/vnd.geo+json",
     },
   },
   {
@@ -118,7 +127,7 @@ const projects: Project[] = [
     map: {
       longitude: -48.5,
       latitude: -24.7,
-      zoom: 9,
+      zoom: 8,
       label: "Vale do Ribeira, PR/SP",
     },
   },
@@ -275,6 +284,7 @@ export default function ProjectsArea() {
                   latitude={selected.map.latitude}
                   zoom={selected.map.zoom}
                   label={selected.map.label}
+                  boundaryUrl={selected.map.boundaryUrl}
                 />
               </div>
             </div>

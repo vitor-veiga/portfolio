@@ -1,40 +1,144 @@
-import { useState } from "react";
-import Map, { Marker, Popup, NavigationControl } from "react-map-gl/maplibre";
+import { useState, useEffect, useRef } from "react";
+import Map, {
+  Marker,
+  Popup,
+  NavigationControl,
+  Source,
+  Layer,
+} from "react-map-gl/maplibre";
 import { MapProvider } from "react-map-gl/maplibre";
+import type { MapRef } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 
 const MAP_STYLE =
   "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
 
+/** Percorre recursivamente arrays de coordenadas e retorna [minLng, minLat, maxLng, maxLat] */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function calcBbox(geojson: any): [number, number, number, number] | null {
+  let minLng = Infinity,
+    minLat = Infinity,
+    maxLng = -Infinity,
+    maxLat = -Infinity;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function walk(coords: any) {
+    if (typeof coords[0] === "number") {
+      const [lng, lat] = coords as [number, number];
+      if (lng < minLng) minLng = lng;
+      if (lat < minLat) minLat = lat;
+      if (lng > maxLng) maxLng = lng;
+      if (lat > maxLat) maxLat = lat;
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (coords as any[]).forEach(walk);
+    }
+  }
+
+  const features =
+    geojson.features ?? (geojson.type === "Feature" ? [geojson] : []);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  features.forEach((f: any) => {
+    if (f.geometry?.coordinates) walk(f.geometry.coordinates);
+  });
+
+  if (!isFinite(minLng)) return null;
+  return [minLng, minLat, maxLng, maxLat];
+}
 interface ProjectMapProps {
   longitude: number;
   latitude: number;
-  zoom?: number;
   label: string;
+  zoom?: number;
+  boundaryUrl?: string;
 }
 
 export default function ProjectMap({
   longitude,
   latitude,
-  zoom = 12,
   label,
+  zoom,
+  boundaryUrl,
 }: ProjectMapProps) {
   const [showPopup, setShowPopup] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [boundary, setBoundary] = useState<any>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const mapRef = useRef<MapRef | null>(null);
+
+  // Efeito 1: busca o GeoJSON quando a URL muda
+  useEffect(() => {
+    if (!boundaryUrl) {
+      setBoundary(null);
+      return;
+    }
+    let cancelled = false;
+    fetch(boundaryUrl)
+      .then((r) => r.json())
+      .then((data) => {
+        if (!cancelled) setBoundary(data);
+      })
+      .catch(() => {
+        if (!cancelled) setBoundary(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [boundaryUrl]);
+
+  // Efeito 2: centraliza o mapa quando o boundary E o mapa estão prontos
+  useEffect(() => {
+    if (!mapLoaded || !boundary || !mapRef.current) return;
+    const bbox = calcBbox(boundary);
+    if (!bbox) return;
+    mapRef.current.fitBounds(
+      [
+        [bbox[0], bbox[1]],
+        [bbox[2], bbox[3]],
+      ],
+      { padding: 20, duration: 600 },
+    );
+  }, [boundary, mapLoaded]);
+
   const initialViewState = {
     longitude,
     latitude,
-    zoom,
+    zoom: zoom ?? 0,
   };
 
   return (
     <MapProvider>
       <Map
+        ref={mapRef}
         mapStyle={MAP_STYLE}
         initialViewState={initialViewState}
         attributionControl={false}
         style={{ width: "100%", height: "100%" }}
+        onLoad={() => setMapLoaded(true)}
       >
         <NavigationControl position="top-right" showCompass={false} />
+
+        {boundary && (
+          <Source id="boundary" type="geojson" data={boundary}>
+            <Layer
+              id="boundary-fill"
+              type="fill"
+              paint={{
+                "fill-color": "#1e3a5f",
+                "fill-opacity": 0.1,
+              }}
+            />
+            <Layer
+              id="boundary-line"
+              type="line"
+              paint={{
+                "line-color": "#1e3a5f",
+                "line-width": 2,
+                "line-opacity": 0.5,
+              }}
+            />
+          </Source>
+        )}
 
         <Marker
           longitude={longitude}
