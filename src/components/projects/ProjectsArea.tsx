@@ -3,6 +3,7 @@ import { File, Lock } from "lucide-react";
 import ProjectMap from "./ProjectMap";
 import GeometricBackground from "../ui/GeometricBackground";
 import FadeIn from "../ui/FadeIn";
+import valeDoRibeiraGeoJSON from "../../assets/vale_do_ribeira.json";
 
 interface Project {
   id: number;
@@ -18,6 +19,8 @@ interface Project {
     label: string;
     zoom?: number;
     boundaryUrl?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    boundaryData?: any;
   };
   highlight?: string;
   documents?: string;
@@ -127,8 +130,8 @@ const projects: Project[] = [
     map: {
       longitude: -48.5,
       latitude: -24.7,
-      zoom: 8,
       label: "Vale do Ribeira, PR/SP",
+      boundaryData: valeDoRibeiraGeoJSON,
     },
   },
 ];
@@ -285,6 +288,7 @@ export default function ProjectsArea() {
                   zoom={selected.map.zoom}
                   label={selected.map.label}
                   boundaryUrl={selected.map.boundaryUrl}
+                  boundaryData={selected.map.boundaryData}
                 />
               </div>
             </div>

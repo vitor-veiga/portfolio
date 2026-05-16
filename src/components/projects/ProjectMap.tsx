@@ -51,6 +51,8 @@ interface ProjectMapProps {
   label: string;
   zoom?: number;
   boundaryUrl?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  boundaryData?: any;
 }
 
 export default function ProjectMap({
@@ -59,6 +61,7 @@ export default function ProjectMap({
   label,
   zoom,
   boundaryUrl,
+  boundaryData,
 }: ProjectMapProps) {
   const [showPopup, setShowPopup] = useState(true);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -66,10 +69,23 @@ export default function ProjectMap({
   const [mapLoaded, setMapLoaded] = useState(false);
   const mapRef = useRef<MapRef | null>(null);
 
-  // Efeito 1: busca o GeoJSON quando a URL muda
+  // Efeito 0: impede o canvas do mapa de roubar o foco na montagem
+  useEffect(() => {
+    const id = setTimeout(() => {
+      mapRef.current?.getCanvas()?.blur();
+    }, 0);
+    return () => clearTimeout(id);
+  }, []);
+
+  // Efeito 1a: usa GeoJSON local quando fornecido diretamente
+  useEffect(() => {
+    if (boundaryData !== undefined) setBoundary(boundaryData);
+  }, [boundaryData]);
+
+  // Efeito 1b: busca o GeoJSON quando a URL muda
   useEffect(() => {
     if (!boundaryUrl) {
-      setBoundary(null);
+      if (boundaryData === undefined) setBoundary(null);
       return;
     }
     let cancelled = false;
@@ -84,7 +100,7 @@ export default function ProjectMap({
     return () => {
       cancelled = true;
     };
-  }, [boundaryUrl]);
+  }, [boundaryUrl, boundaryData]);
 
   // Efeito 2: centraliza o mapa quando o boundary E o mapa estão prontos
   useEffect(() => {
